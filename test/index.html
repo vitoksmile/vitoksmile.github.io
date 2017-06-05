@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="testingApp">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Testing system | Victor Mykhailiv</title>
+	
+	<style>
+	body {
+		font-size: large;
+	}
+	.answer {
+		margin: 8px;
+	}
+	.finish {
+		background-color: #f44336;
+		border: none;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+	}
+	.result {
+		font-size: xx-large;
+	}
+	</style>
+</head>
+<body id="body">
+	<div ng-controller="testingSystemController" align="center">
+		<div ng-repeat="test in tests">
+			<div ng-show="!isMultiAnswer($index)">
+				<b>{{test.title}}</b>
+			
+				<div ng-repeat="answer in test.answers">
+					<input type="radio" name="{{test.id}}" ng-model="test.answer" value="{{answer}}" class="answer">{{answer}}<br>
+				</div>
+				<br>
+			</div>
+			
+			<div ng-show="isMultiAnswer($index)">
+				<b>{{test.title}}</b>
+				
+				<div ng-repeat="answer in test.answers">
+					<input type="checkbox" value="{{answer}}" ng-click="multiAnswer(test, $index)">{{answer}}<br>
+				</div>
+				<br>
+			</div>
+		</div>
+			
+		<input type="submit" value="Завершити тест" class="finish" ng-click="finish()"/><br><br>
+		
+		<div ng-show="result.finished" class="result">
+			<p><u>Оцінка:</u> {{result.mark}} з {{result.total}} балів</p>
+			<p>{{(result.mark/result.total)*100}}%</p>
+		</div>
+		
+		<input ng-show="result.finished" type="submit" value="Очистити результат" class="reset" ng-click="reset()"/>
+	</div>
+
+	<script src="scripts/angular.min.js"></script>
+	<script src="scripts/app.js"></script>
+</body>
+</html>
