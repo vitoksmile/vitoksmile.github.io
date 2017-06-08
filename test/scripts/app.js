@@ -3,32 +3,67 @@ angular.module('testingApp', [])
 .controller('testingSystemController', function($scope) {
 	var tests = [
 		{
+			'id': 8,
+			'title': 'Який із цих регістрів спеціальних функцій не має відношення до портів?',
+			'answers': ['DDR', 'PORT', 'PIN', 'UBRR'],
+			'correct': 'UBRR',
+			'answer': ''
+		},
+		{
+			'id': 9,
 			'title': 'Який із цих регістрів використовується для задання напрямку передачі даних для порту А?',
-			'answers': ['DDRA', 'PORTA', 'PINA', 'ADDR'],
+			'answers': ['DDRA', 'PORTA', 'PINA', 'UBRR'],
 			'correct': 'DDRA',
-			'answer': '',
-			'mark': 1
+			'answer': ''
 		},
 		{
+			'id': 10,
 			'title': 'Який із цих регістрів використовується для виводу даних у порт А?',
-			'answers': ['DDRA', 'PORTA', 'PINA', 'ADDR'],
+			'answers': ['DDRA', 'PORTA', 'PINA', 'UBRR'],
 			'correct': 'PORTA',
-			'answer': '',
-			'mark': 1
+			'answer': ''
 		},
 		{
-			'title': 'Який із цих інтерфейсів є асинхронним (не має лінії тактування)?',
-			'answers': ['SPI', 'I2C', 'UART', 'USB', '1-Wire', 'CAN'],
-			'correct': ['UART', 'USB', '1-Wire', 'CAN'],
-			'answer': [],
-			'mark': 2
+			'id': 11,
+			'title': 'Який із цих регістрів використовується для вводу даних з порту А?',
+			'answers': ['DDRA', 'PORTA', 'PINA', 'ADDR'],
+			'correct': 'PINA',
+			'answer': ''
 		},
 		{
-			'title': 'Який із цих інтерфейсів є синхронним (має лінію тактування)?',
-			'answers': ['SPI', 'I2C', 'UART', 'USB', '1-Wire', 'CAN'],
-			'correct': ['SPI', 'I2C'],
-			'answer': [],
-			'mark': 2
+			'id': 12,
+			'title': 'Який режим роботи виводів порту А, якщо в регістрі DDRA записано значення 00111111?',
+			'answers': ['Розряди 0..5 виходи, решта - входи', 'Розряди 0..5 входи, решта - виходи', 'Усі порти на вивід', 'Усі порти на ввід'],
+			'correct': 'Розряди 0..5 виходи, решта - входи',
+			'answer': ''
+		},
+		{
+			'id': 13,
+			'title': 'Яка дія виконується даним рядком коду? PORTA = 0xFF;',
+			'answers': ['На виході порту А усюди будуть 1', 'Напрям передачі даних встановлено на вивід', 'Напрям передачі даних встановлено на ввід', 'Записування значення з порту А у змінну Х'],
+			'correct': 'На виході порту А усюди будуть 1',
+			'answer': ''
+		},
+		{
+			'id': 14,
+			'title': 'Яка дія виконується даним рядком коду? DDRA = 0xFF;',
+			'answers': ['На виході порту А усюди будуть 1', 'Напрям передачі даних встановлено на вивід', 'Напрям передачі даних встановлено на ввід', 'Записування значення з порту А у змінну Х'],
+			'correct': 'Напрям передачі даних встановлено на вивід',
+			'answer': ''
+		},
+		{
+			'id': 15,
+			'title': 'Яка дія виконується даним рядком коду? X = PINA;',
+			'answers': ['На виході порту А усюди будуть 1', 'Напрям передачі даних встановлено на вивід', 'Напрям передачі даних встановлено на ввід', 'Записування значення з порту А у змінну Х'],
+			'correct': 'Записування значення з порту А у змінну Х',
+			'answer': ''
+		},
+		{
+			'id': 16,
+			'title': 'Таймери якої розрядності присутні у більшості моделей МК AVR?',
+			'answers': ['4', '8', '10', '12'],
+			'correct': '8',
+			'answer': ''
 		}
 	];
 	
@@ -42,13 +77,20 @@ angular.module('testingApp', [])
 	for (var i=0; i<tests.length; i++) {
 		shuffle(tests[i].answers);
 	}
+	/*
+	$scope.tests = [];
+	for (var i=0; i<20; i++) {
+		$scope.tests.push(tests[i]);
+	}
+	*/
 	$scope.tests = tests;
 	
 	$scope.result = {
 		'mark': 0,
 		'total': 0,
 		'done': 0,
-		'finished': false
+		'finished': false,
+		'error': []
 	};
 	
 	$scope.isMultiAnswer = function(testIndex) {
@@ -73,10 +115,11 @@ angular.module('testingApp', [])
 	
 	$scope.finish = function() {
 		var mark = 0;
-		var total = 0;
+		var total = $scope.tests.length;
 		var done = 0;
+		var error = [];
 		
-		for (var i=0; i<$scope.tests.length; i++) {
+		for (var i=0; i<total; i++) {
 			var test = $scope.tests[i];
 			
 			if (Array.isArray(test.answer)) {
@@ -92,22 +135,26 @@ angular.module('testingApp', [])
 					}
 					
 					if (t == test.answer.length) {
-						mark += test.mark;
+						mark++;
+					} else {
+						error.push({'test': test, 'index': i+1});
 					}
+				} else {
+					error.push({'test': test, 'index': i+1});
 				}
 				if (test.answer.length > 0) {
 					done++;
 				}
 			} else {
 				if (test.answer == test.correct) {
-					mark += test.mark;
+					mark++;
+				} else {
+					error.push({'test': test, 'index': i+1});
 				}
 				if (test.answer.length > 0) {
 					done++;
 				}
 			}
-			
-			total += test.mark;
 		}
 		
 		if (done != $scope.tests.length) {
@@ -132,7 +179,8 @@ angular.module('testingApp', [])
 			'mark': mark,
 			'total': total,
 			'done': done,
-			'finished': true
+			'finished': true,
+			'error': error
 		};
 	}
 	

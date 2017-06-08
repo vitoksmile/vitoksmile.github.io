@@ -27,13 +27,16 @@
 	.result {
 		font-size: xx-large;
 	}
+	.result_error {
+		font-size: x-large;
+	}
 	</style>
 </head>
 <body id="body">
 	<div ng-controller="testingSystemController" align="center">
 		<div ng-repeat="test in tests">
 			<div ng-show="!isMultiAnswer($index)">
-				<b>{{test.title}}</b>
+				{{$index+1}} (№{{test.id}}). <b>{{test.title}}</b>
 			
 				<div ng-repeat="answer in test.answers">
 					<input type="radio" name="{{test.id}}" ng-model="test.answer" value="{{answer}}" class="answer">{{answer}}<br>
@@ -42,7 +45,7 @@
 			</div>
 			
 			<div ng-show="isMultiAnswer($index)">
-				<b>{{test.title}}</b>
+				{{$index+1}} (№{{test.id}}). <b>{{test.title}}</b>
 				
 				<div ng-repeat="answer in test.answers">
 					<input type="checkbox" value="{{answer}}" ng-click="multiAnswer(test, $index)">{{answer}}<br>
@@ -56,6 +59,12 @@
 		<div ng-show="result.finished" class="result">
 			<p><u>Оцінка:</u> {{result.mark}} з {{result.total}} балів</p>
 			<p>{{(result.mark/result.total)*100}}%</p>
+			
+			<div ng-show="result.error.length>0" class="result_error">
+				<div ng-repeat="test in result.error">
+					{{test.index}} (№{{test.test.id}}): <i>{{test.test.correct}}</i>
+				</div>
+			</div>
 		</div>
 		
 		<input ng-show="result.finished" type="submit" value="Очистити результат" class="reset" ng-click="reset()"/>
