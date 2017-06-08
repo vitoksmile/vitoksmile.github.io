@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="avtobusApp">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initialscale=1">
+	<meta name="description" content="Розклад автобусів. Глибівка. Глибоке. Саджава. Хмелівка. Віктор Михайлів">
+	<meta http-equiv="refresh" content="30" />
+	<title>Автобуси [beta] | Віктор Михайлів</title>
+	
+	<meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Автобуси [beta] | Віктор Михайлів">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <meta name="msapplication-TileImage" content="images/win-desktop.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+	
+	<link rel="stylesheet" href="styles/material.min.css">
+	<script src="scripts/material.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="scripts/angular.min.js"></script>
+	<script src="scripts/app.js"></script>
+<style>
+.content {
+	background-color: #F5F5F5;
+}
+.card {
+	background-color: white;
+	width: 98%;
+	text-align: center;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	padding: 4px;
+	font-size: 16pt;
+}
+.card .text {
+	color: black;
+	padding: 16px;
+}
+.card .text .timeLeft {
+	color: #616161;
+	font-size: 10pt;
+}
+.card .text .time {
+	color: #616161;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body>
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" ng-controller="avtobusController">
+	<div class="mdl-tabs__tab-bar">
+		<a href="#bogo" class="mdl-tabs__tab is-active">У Бого</a>
+		<a href="#village" class="mdl-tabs__tab">У села</a>
+		<a href="#author" class="mdl-tabs__tab">Про мене</a>
+	</div>
+
+	<div class="mdl-tabs__panel is-active content" id="bogo">
+		<div class="mdl-layout">
+			<div class="card mdl-shadow--2dp" ng-repeat="points in bogo">
+				<div class="text" ng-repeat="point in points">
+					<div ng-show="isBoldTitle(points, point)">
+						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+						<b>&nbsp;{{point.title}}&nbsp;</b>
+						<span class="time">{{timeToString(point)}}</span>
+					</div>
+					<div ng-show="!isBoldTitle(points, point)">
+						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+						&nbsp;{{point.title}}&nbsp;
+						<span class="time">{{timeToString(point)}}</span>
+					</div>
+					<u ng-show="time==0">очікування</u>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+	<div class="mdl-tabs__panel content" id="village">
+		<div class="mdl-layout">
+			<div class="card mdl-shadow--2dp" ng-repeat="points in village">
+				<div class="text" ng-repeat="point in points">
+					<div ng-show="isBoldTitle(points, point)">
+						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+						<b>&nbsp;{{point.title}}&nbsp;</b>
+						<span class="time">{{timeToString(point)}}</span>
+					</div>
+					<div ng-show="!isBoldTitle(points, point)">
+						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+						&nbsp;{{point.title}}&nbsp;
+						<span class="time">{{timeToString(point)}}</span>
+					</div>
+					<u ng-show="time==0">очікування</u>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+	<div class="mdl-tabs__panel content" id="author">
+		Victor Mykhailiv
+	</div>
+</div>
+
+<footer class="mdl-mini-footer">
+	<div class="mdl-mini-footer__left-section">
+		<div class="mdl-logo">Віктор Михайлів &#169; 2017</div>
+		<ul class="mdl-mini-footer__link-list">
+			<li><a href="https://fb.com/mykhailiv.victor" target="blank">Facebook</a></li>
+			<li><a href="https://instagram.com/vitoksmile" target="blank">Instagram</a></li>
+			<li><a href="https://t.me/vitoksmile" target="blank">Telegram</a></li>
+			<li><a href="https://play.google.com/store/apps/dev?id=4862720111320373828" target="blank">Google Play</a></li>
+		</ul>
+	</div>
+</footer>
+</body>
+</html>
