@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initialscale=1">
 	<meta name="description" content="Розклад автобусів. Глибівка. Глибоке. Саджава. Хмелівка. Віктор Михайлів">
-	<meta http-equiv="refresh" content="30" />
+	<!--<meta http-equiv="refresh" content="30" />-->
 	<title>Автобуси [beta] | Віктор Михайлів</title>
 	
 	<meta name="mobile-web-app-capable" content="yes">
@@ -54,32 +54,51 @@
 	color: #616161;
 	font-size: 10pt;
 }
+.noBusses {
+	width: 98%;
+	text-align: center;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	padding: 4px;
+	font-size: 16pt;
+}
+.about-max-width {
+  max-width: 900px;
+  margin: auto;
+}
 </style>
 </head>
 <body>
-
 <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" ng-controller="avtobusController">
 	<div class="mdl-tabs__tab-bar">
 		<a href="#bogo" class="mdl-tabs__tab is-active">У Бого</a>
 		<a href="#village" class="mdl-tabs__tab">У села</a>
-		<a href="#author" class="mdl-tabs__tab">Про мене</a>
+		<a href="#about" class="mdl-tabs__tab">Про мене</a>
 	</div>
 
 	<div class="mdl-tabs__panel is-active content" id="bogo">
 		<div class="mdl-layout">
+			<div class="noBusses" ng-show="noBogo()">
+				Сьогодні уже нічого не буде їхати.<br>
+				Розклад руху на {{noBogoDay()}}:
+			</div>
+		
 			<div class="card mdl-shadow--2dp" ng-repeat="points in bogo">
 				<div class="text" ng-repeat="point in points">
-					<div ng-show="isBoldTitle(points, point)">
-						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+					<div ng-show="isBoldTitle(points, point) && !isWaiting(point)">
+						<span class="timeLeft">{{timeLeftToString(points, point)}}</span>
 						<b>&nbsp;{{point.title}}&nbsp;</b>
 						<span class="time">{{timeToString(point)}}</span>
 					</div>
-					<div ng-show="!isBoldTitle(points, point)">
-						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+					<div ng-show="!isBoldTitle(points, point) && !isWaiting(point)">
+						<span class="timeLeft">{{timeLeftToString(points, point)}}</span>
 						&nbsp;{{point.title}}&nbsp;
 						<span class="time">{{timeToString(point)}}</span>
 					</div>
-					<u ng-show="time==0">очікування</u>
+					<u ng-show="isWaiting(point)">очікування</u>
 				</div>
 			</div>
 		</div>
@@ -87,32 +106,53 @@
   
 	<div class="mdl-tabs__panel content" id="village">
 		<div class="mdl-layout">
+			<div class="noBusses" ng-show="noVillage()">
+				Сьогодні уже нічого не буде їхати.<br>
+				Розклад руху на {{noVillageDay()}}:
+			</div>
+		
 			<div class="card mdl-shadow--2dp" ng-repeat="points in village">
 				<div class="text" ng-repeat="point in points">
-					<div ng-show="isBoldTitle(points, point)">
-						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+					<div ng-show="isBoldTitle(points, point) && !isWaiting(point)">
+						<span class="timeLeft">{{timeLeftToString(points, point)}}</span>
 						<b>&nbsp;{{point.title}}&nbsp;</b>
 						<span class="time">{{timeToString(point)}}</span>
 					</div>
-					<div ng-show="!isBoldTitle(points, point)">
-						<span class="timeLeft">{{timeLeftToString(point)}}</span>
+					<div ng-show="!isBoldTitle(points, point) && !isWaiting(point)">
+						<span class="timeLeft">{{timeLeftToString(points, point)}}</span>
 						&nbsp;{{point.title}}&nbsp;
 						<span class="time">{{timeToString(point)}}</span>
 					</div>
-					<u ng-show="time==0">очікування</u>
+					<u ng-show="isWaiting(point)">очікування</u>
 				</div>
 			</div>
 		</div>
 	</div>
   
-	<div class="mdl-tabs__panel content" id="author">
-		Victor Mykhailiv
+	<div class="mdl-tabs__panel content" id="about">
+		<div class="mdl-grid about-max-width">
+			<div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+				<div class="mdl-card__title">
+					<h2 class="mdl-card__title-text">Victor Mykhailiv</h2>
+				</div>
+				<div class="mdl-card__media">
+					<img class="article-image" src="images/about-header.jpg" border="0" alt="Victor Mykhailiv">
+				</div>
+				<div class="mdl-grid">
+					<h3 class="mdl-cell mdl-cell--12-col mdl-typography--headline">Developer. Dreamer.</h3>
+					<div class="mdl-cell mdl-cell--8-col mdl-card__supporting-text no-padding">
+						<p>Hi. I'm 21 years old. I have been working with Android for 4 years. Also during that time developed his skills in HTML, PHP and MySQL.</p>
+						<span>You can find me in <a href="https://fb.com/mykhailiv.victor" target="blank">Facebook</a>, <a href="https://t.me/vitoksmile" target="blank">Telegram</a> and <a href="https://play.google.com/store/apps/dev?id=4862720111320373828" target="blank">Google Play</a>.</span>
+					</div>
+				</div>
+			</div>	
+		</div>
 	</div>
 </div>
 
 <footer class="mdl-mini-footer">
 	<div class="mdl-mini-footer__left-section">
-		<div class="mdl-logo">Віктор Михайлів &#169; 2017</div>
+		<div class="mdl-logo">Victor Mykhailiv &#169; 2017</div>
 		<ul class="mdl-mini-footer__link-list">
 			<li><a href="https://fb.com/mykhailiv.victor" target="blank">Facebook</a></li>
 			<li><a href="https://instagram.com/vitoksmile" target="blank">Instagram</a></li>
