@@ -31,8 +31,14 @@ var app = angular.module('avtobusApp', [])
 			var bogo = [];
 			var village = [];
 			
+			$scope.busses = getBusses(1);
+			
 			for (var i=0; i<bussesB.length; i++) {
 				var bus = bussesB[i];
+				
+				if ($scope.busDisable(bus)) {
+					continue;
+				}
 				
 				for (var j=0; j<bus.routes.length; j++) {
 					var points = bus.routes[j].points;
@@ -49,6 +55,10 @@ var app = angular.module('avtobusApp', [])
 			}
 			for (var i=0; i<bussesV.length; i++) {
 				var bus = bussesV[i];
+				
+				if ($scope.busDisable(bus)) {
+					continue;
+				}
 				
 				for (var j=0; j<bus.routes.length; j++) {
 					var points = bus.routes[j].points;
@@ -108,7 +118,7 @@ var app = angular.module('avtobusApp', [])
 		}
 	}
 	
-	$scope.isBoldTitle = function(points, point) {
+		$scope.isBoldTitle = function(points, point) {
 		var index = points.indexOf(point);
 		return index == 0 || index == points.length - 1;
 	}
@@ -167,5 +177,67 @@ var app = angular.module('avtobusApp', [])
 		}
 		
 		return hours + ':' + minutes;
+	}
+	
+	var setCookie = function(key, value) {
+		Cookies.set(key, value, {expires: 365, path: ''});
+	}
+	var snackbarReload = function() {
+		var snackbar = document.querySelector('.mdl-js-snackbar');
+		if (snackbar.MaterialSnackbar.active) {
+			return;
+		}
+		var data = {
+			message: 'Перегрузіть сторінку, щоб застосувати зміни',
+			actionHandler: function(event) {
+				snackbar.classList.remove("mdl-snackbar--active")
+				location.reload()
+			},
+			actionText: 'Перегрузити',
+			timeout: 3000
+		};		
+		snackbar.MaterialSnackbar.showSnackbar(data);
+	}
+	$scope.busEnableClicked = function(bus) {
+		var key = md5(bus.title);
+		var enable = Cookies.get(key) !== undefined;
+		
+		var countKey = bus.toCity ? 'count_b' : 'count_v';
+		
+		if (Cookies.get(countKey) !== undefined) {
+			var count = parseInt(Cookies.get(countKey));
+			if (enable) {
+				setCookie(countKey, count - 1);
+			} else {
+				if (count + 1 == $scope.busses.length / 2) {
+					alert('Хоча би один маршрут повинен бути вибраний!');
+					return;
+				}
+				setCookie(countKey, count + 1);
+			}
+		} else {
+			if (enable) {
+				setCookie(countKey, 0);
+			} else {
+				setCookie(countKey, 1);
+			}
+		}
+		
+		if (enable) {
+			Cookies.remove(key, {path: ''});
+		} else {
+			setCookie(key, 'enable');
+		}
+		
+		snackbarReload();
+	}
+	$scope.busDisable = function(bus) {
+		return Cookies.get(md5(bus.title)) !== undefined;
+	}
+	$scope.busDisableButtonText = function(bus) {
+		return Cookies.get(md5(bus.title)) !== undefined ? 'Показувати маршрут' : 'Приховати маршрут';
+	}
+	$scope.isCookiesEnabled = function() {
+		return navigator.cookieEnabled;
 	}
 });
