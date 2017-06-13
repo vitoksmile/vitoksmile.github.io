@@ -30,6 +30,16 @@
 	.result_error {
 		font-size: x-large;
 	}
+	table, td {
+		border: 1px solid black;
+		border-collapse: collapse;
+		width: 90%;
+	}
+	td {
+		padding: 16px;
+		text-align: left; 
+		width: 45%;
+	}
 	</style>
 </head>
 <body id="body">
@@ -37,16 +47,16 @@
 		<div ng-repeat="test in tests">
 			<div ng-show="!isMultiAnswer($index)">
 				{{$index+1}} (№{{test.id}}). <b>{{test.title}}</b>
-			
+				
 				<div ng-repeat="answer in test.answers">
 					<input type="radio" name="{{test.id}}" ng-model="test.answer" value="{{answer}}" class="answer">{{answer}}<br>
 				</div>
 				<br>
 			</div>
-			
+				
 			<div ng-show="isMultiAnswer($index)">
 				{{$index+1}} (№{{test.id}}). <b>{{test.title}}</b>
-				
+					
 				<div ng-repeat="answer in test.answers">
 					<input type="checkbox" value="{{answer}}" ng-click="multiAnswer(test, $index)">{{answer}}<br>
 				</div>
@@ -72,5 +82,8 @@
 
 	<script src="scripts/angular.min.js"></script>
 	<script src="scripts/app.js"></script>
+	
+	<a href='https://acadooghostwriter.com/'>https://AcadooGhostwriter.com</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=7d1f78668d52a1271861c7d7c29903cc2fabbe79'></script>
+	<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/288860/t/5"></script>
 </body>
 </html>
