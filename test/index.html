@@ -97,7 +97,7 @@
 			<div ng-show="result.error.length>0" class="result_error">
 				Неправильні відповіді:<br>
 				<div ng-repeat="test in result.error">
-					{{test.index}} (№{{test.test.id}}): <i>{{test.test.correct}}</i>
+					{{$index+1}} (№{{test.test.id}}). <b>{{test.test.title}}</b>: <i>{{test.test.correct}}</i>
 				</div>
 			</div>
 		</div>

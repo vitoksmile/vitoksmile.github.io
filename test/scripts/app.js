@@ -517,6 +517,8 @@ angular.module('testingApp', [])
 		r = -1;
 	}
 	$scope.r = parseInt(r);
+
+	var c = parseInt(getParameter('c')) == 1;
 	
 	var n = getParameter('n');
 	if (n === undefined || n <= 0 || n > tests.length) {
@@ -598,7 +600,7 @@ angular.module('testingApp', [])
 			}
 		}
 		
-		if (done != $scope.tests.length) {
+		if (done != $scope.tests.length && !c) {
 			alert('Дайте відповіді на усі питання!');
 			return;
 		}
