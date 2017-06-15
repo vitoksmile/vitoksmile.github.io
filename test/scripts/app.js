@@ -490,7 +490,9 @@ angular.module('testingApp', [])
 		shuffle(tests);
 	}
 	for (var i=0; i<tests.length; i++) {
-		shuffle(tests[i].answers);
+		for (var j=0; j<tests[i].answers.length; j++) {
+			shuffle(tests[i].answers);
+		}
 	}
 	$scope.tests = [];
 	
