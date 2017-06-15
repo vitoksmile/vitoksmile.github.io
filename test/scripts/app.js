@@ -623,9 +623,31 @@ angular.module('testingApp', [])
 			'finished': true,
 			'error': error
 		};
+		
+		clearInterval(timeinterval);
 	}
 	
 	$scope.reset = function() {
 		location.reload();
 	}
+	
+	var m = 25;
+	if (n != tests.length) {
+		m = n * 1.5;
+	}
+	var endTime = new Date(Date.parse(new Date()) + m * 60 * 1000);
+	var tick = function() {
+		var t = Date.parse(endTime) - Date.parse(new Date());
+		var minutes = Math.floor((t / 1000 / 60) % 60);
+		var seconds = Math.floor((t / 1000) % 60);
+
+		if (t <= 0) {
+		  clearInterval(timeinterval);
+		  document.getElementById('end').style.display = 'flex';
+		}
+		
+		document.getElementById('time').innerHTML = ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+	}
+	tick();
+	var timeinterval = setInterval(tick, 1000);
 });
