@@ -103,7 +103,7 @@ angular.module('testingApp', [])
 		{
 			'id': 15,
 			'title': 'Яка дія виконується даним рядком коду? X = PINA;',
-			'answers': ['задання напряму передачі даних через порт А: всі розряди є виходами', 'задання напряму передачі даних через порт А: всі розряди є входами', 'вивід лог.1 у всі розряди порту А', 'читання даних з порту А'],
+			'answers': ['читання даних з порту А у змінну Х', 'вивід змінної Х у порт А', 'задання напряму передачі даних через порт А: всі розряди є виходами', 'тут немає операцій з портами'],
 			'correct': 'читання даних з порту А у змінну Х',
 			'answer': ''
 		},
@@ -486,13 +486,15 @@ angular.module('testingApp', [])
 			[a[i - 1], a[j]] = [a[j], a[i - 1]];
 		}
 	}
-	shuffle(tests);
+	for (var i=0; i<10; i++){
+		shuffle(tests);
+	}
 	for (var i=0; i<tests.length; i++) {
 		shuffle(tests[i].answers);
 	}
 	$scope.tests = [];
 	
-	var getN = function() {
+	var getParameter = function(key) {
 		var qs = document.location.search;
 		
 		qs = qs.split('+').join(' ');
@@ -505,15 +507,19 @@ angular.module('testingApp', [])
 			params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
 		}
 		
-		var result = params.n;
-		
-		if (result === undefined || result <= 0 || result > tests.length) {
-			return tests.length;
-		}
-
-		return result;
+		return params[key];
 	}
-	var n = getN();
+	
+	var r = getParameter('r');	
+	if (r !== undefined && (r < 0 || r > 100)) {
+		r = -1;
+	}
+	$scope.r = parseInt(r);
+	
+	var n = getParameter('n');
+	if (n === undefined || n <= 0 || n > tests.length) {
+		n = tests.length;
+	}
 	for (var i=0; i<n; i++) {
 		$scope.tests.push(tests[i]);
 	}

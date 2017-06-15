@@ -67,8 +67,10 @@
 		<input type="submit" value="Завершити тест" class="finish" ng-click="finish()"/><br><br>
 		
 		<div ng-show="result.finished" class="result">
-			<p><u>Оцінка:</u> {{result.mark}} з {{result.total}} балів</p>
-			<p>{{(result.mark/result.total)*100}}%</p>
+			<p><u>Оцінка:</u> {{result.mark}} з {{result.total}} балів ({{(result.mark / result.total) * 100}}%)</p>
+			<p ng-show="r>=0">
+			<u>Загальний рейтинг:</u> {{(r + (result.mark / result.total) * 110) / 2}}
+			</p>
 			
 			<div ng-show="result.error.length>0" class="result_error">
 				<div ng-repeat="test in result.error">
