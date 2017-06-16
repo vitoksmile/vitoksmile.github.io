@@ -139,7 +139,7 @@ angular.module('testingApp', [])
 		showResult();
 	}
 	$scope.getRating = function() {
-		if ($scope.result === undefined) {
+		if ($scope.resultmark === undefined) {
 			return 0;
 		}
 		return (parseInt($scope.rating) + ($scope.result.mark / $scope.result.total) * 110) / 2;
