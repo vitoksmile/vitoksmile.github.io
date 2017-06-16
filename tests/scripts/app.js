@@ -1,7 +1,7 @@
 angular.module('testingApp', [])
 
 .controller('testingSystemController', function($scope, $http) {
-	var URL = 'http://vitoksmile.github.io/tests/db/';
+	var URL = 'https://vitoksmile.github.io/tests/db/';
 	$scope.tests = [];
 	
 	var loadTest = function(test, callback) {
