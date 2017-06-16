@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="testingApp">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Testing system | Victor Mykhailiv</title>
+	
+	<style>
+	body {
+		font-size: x-large;
+		padding: 4px;
+	}
+	table, td {
+		border: 1px solid black;
+		border-collapse: collapse;
+		width: 90%;
+	}
+	td {
+		padding: 16px;
+		text-align: left; 
+		width: 45%;
+	}
+	.hidden {
+		display: none;
+	}
+	a:link {
+		color: blue; 
+		background-color: transparent; 
+		text-decoration: none;
+	}
+	a:visited {
+		color: blue;
+		background-color: transparent;
+		text-decoration: none;
+	}
+	a:hover {
+		color: blue;
+		background-color: transparent;
+		text-decoration: underline;
+	}
+	a:active {
+		color: blue;
+		background-color: transparent;
+		text-decoration: underline;
+	}
+	.count {
+		margin-left: 16px;
+	}
+	.number {
+		margin-left: 8px;
+		color: red;
+		cursor: pointer;
+	}
+	.numberDone {
+		margin-left: 8px;
+		color: blue;
+		cursor: pointer;
+	}
+	.finish {
+		background-color: #f44336;
+		border: none;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+	}
+	.answer {
+		margin: 8px;
+	}
+	</style>
+</head>
+<body id="body">
+	<div ng-controller="testingSystemController" align="center">
+		<div ng-show="state=='null'">Loading...</div>
+	
+		<div class="hidden" id="home" ng-show="state=='home'">
+			<b>Доступні тести:</b>
+			
+			<table>
+				<tr ng-repeat="test in tests">
+					<td>
+						<span>{{test.title}}</span>
+						<span ng-repeat="count in test.count">
+							<a href="javascript:void(0)" class="count" ng-click="testClicked(test, count)">{{count}}</a>
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="hidden" id="test" ng-show="state=='test'&&test!==undefined">
+			<div><b>{{test.title}}</b></div>
+			<span ng-repeat="n in numbers">
+				<span ng-click="numberClicked(n)" ng-class="getNumberClass(n)">
+					<u ng-show="$index==number">{{n}}</u>
+					<a ng-show="$index!=number">{{n}}</a>
+				</span>
+			</span>
+			<br><br>
+			<div>
+				<b>{{answer.title}}</b>
+				<table>
+					<tr>
+						<td><label><input type="radio" name="{{answer.id}}" ng-model="answer.answer" value="{{answer.answers[0]}}" class="answer">{{answer.answers[0]}}</label></td>
+						<td><label><input type="radio" name="{{answer.id}}" ng-model="answer.answer" value="{{answer.answers[1]}}" class="answer">{{answer.answers[1]}}</label></td>
+					</tr>
+					<tr>
+						<td><label><input type="radio" name="{{answer.id}}" ng-model="answer.answer" value="{{answer.answers[2]}}" class="answer">{{answer.answers[2]}}</label></td>
+						<td><label><input type="radio" name="{{answer.id}}" ng-model="answer.answer" value="{{answer.answers[3]}}" class="answer">{{answer.answers[3]}}</label></td>
+					</tr>
+				</table>
+			</div>
+			
+			<br><br><br>
+			<label>Поточний рейтинг: <input type="text" ng-model="rating"/></label>
+			<br><br><input type="submit" value="Завершити тест" class="finish" ng-click="finish()"/>
+		</div>
+		
+		<div class="hidden" id="result" ng-show="state=='result'&&result!==undefined">
+			Правильно {{result.mark}} з {{result.total}} питань<br>
+			{{(result.mark/result.total)*100}}%
+			<div ng-show="rating!=0">
+				Загальна оцінка: {{getRating()}}
+			</div>
+			
+			<br><br>
+			<input type="submit" value="Головне меню" class="finish" ng-click="home()"/>
+			<br><br>
+			
+			<div ng-show="result.error.length>0">
+				<u>Неправильні відповіді:</u>
+				<div ng-repeat="error in result.error">
+					({{error.number}}) <b>{{error.test.title}}:</b><br>
+					<i>Правильна: </i>{{error.test.correct}}<br>
+					<i>Відповідь: </i>{{error.test.answer}}<br><br>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="scripts/angular.min.js"></script>
+	<script src="scripts/app.js"></script>
+	
+	<a href='https://travelaustria.co/'>Touris Austria</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=c3a8fa86c295247b9f2f17373cd35eec9fb66deb'></script>
+	<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/289541/t/5"></script>
+</body>
+</html>
